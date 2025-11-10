@@ -3,7 +3,7 @@
 - **Nombres:** Kevin Briceño
 - **Carnets:** 15-11661
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 CI3661-PROYECTO1
 ├─ app
 │  └─ Main.hs				          -- ciclo principal y manejo de I/O.
@@ -27,7 +27,7 @@ Este proyecto usa `stack`. Para compilarlo y ejecutarlo:
 1.  **Compilar:** `stack build`
 2.  **Ejecutar:** `stack exec TextAdventureEngine-exe`
 
-## 🎮 Descripción General (detallada)
+## Descripción General (detallada)
 
 Este proyecto es un **motor de aventura de texto**:
 
@@ -64,7 +64,7 @@ Este proyecto es un **motor de aventura de texto**:
     - Posesión de 8 moneda_dorada.
   - Si entras en la salida cumpliendo requisitos, el motor termina la partida con un mensaje de laberinto superado. Si no, el jugador recibe un mensaje que explica qué falta.
 
-## 🧠 Justificación de diseño
+## Justificación de diseño
 
 ### 1) Elección de estructuras de datos
 
@@ -91,11 +91,11 @@ Este proyecto es un **motor de aventura de texto**:
 - El módulo Persistence.hs incluye lógica de validación cruzada durante cargarMundo.
 - Se verifica que todas las referencias (objetos que aparecen en salas, salas destino de las salidas, ítems requeridos por trampas) existan en su respectivo catálogo. Este control previene fallos de runtime causados por un mundo.txt malformado.
 
-## 🧭 Diseño orientado a evolución
+## Diseño orientado a evolución
 
 - El uso de banderas globales (flags) y la definición de objetos y trampas en mundo.txt permiten la fácil adición de nuevos objetos, efectos, y reglas de juego sin modificar la lógica central (Core.hs).
 
-## 🛠 Resumen de lo implementado que afecta la jugabilidad ahora
+## Resumen de lo implementado que afecta la jugabilidad ahora
 
 - Inicio del jugador filtrado para comenzar sólo en salas cuyo nombre empiece por `"Habitacion "` evita comenzar en zonas no diseñadas como la salida.  
 - NPCs reasignados aleatoriamente (crea sensación de que se mueven por el laberinto).  
