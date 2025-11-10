@@ -6,17 +6,18 @@
 ## 📂 Estructura del Proyecto
 CI3661-PROYECTO1
 ├─ app
-│  └─ Main.hs				-- ciclo principal y manejo de I/O.
+│  └─ Main.hs				          -- ciclo principal y manejo de I/O.
 ├─ src
 │  └─ Engine
-│     ├─ Core.hs         	-- lógica pura del juego (procesamiento de comandos)
-│     ├─ Parser.hs       	-- parseo de comandos y direcciones
-│     ├─ Persistence.hs  	-- carga/validación del mundo desde mundo.txt
-│     └─ Types.hs        	-- ADTs y tipos compartidos
-├─ mundo.txt				-- definición del mundo del juego
-├─ package.yaml				-- configuración del proyecto stack
-├─ stack.yaml				-- configuración de stack
-├─ README.md				-- este archivo
+│     ├─ Core.hs         	    -- lógica pura del juego (procesamiento de comandos)
+│     ├─ Parser.hs       	    -- parseo de comandos y direcciones
+│     ├─ Persistence.hs  	    -- carga/validación del mundo desde mundo.txt
+│     └─ Types.hs        	    -- ADTs y tipos compartidos
+├─ mundo.txt				          -- definición del mundo del juego
+├─ package.yaml				        -- configuración del proyecto stack
+├─ stack.yaml				          -- configuración de stack
+├─ README.md				          -- este archivo
+├─ TextAdventureEngine.cabal	-- archivo de configuración cabal
 └─ Proyecto_1_Laboratorio_de_Lenguajes_de_programación.pdf
 
 ## Cómo Compilar y Ejecutar
