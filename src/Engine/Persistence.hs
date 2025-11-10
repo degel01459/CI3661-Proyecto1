@@ -9,7 +9,7 @@ import Data.List (isPrefixOf)
 import Data.Maybe (fromMaybe, catMaybes)
 import Control.Monad (foldM)
 
--- trim
+-- elimina espacios al inicio y al final de un String
 trim :: String -> String
 trim = reverse . dropWhile isSpace . reverse . dropWhile isSpace
 
@@ -25,7 +25,7 @@ splitWhen p xs = case dropWhile p xs of
   [] -> []
   xs' -> let (chunk, rest) = break p xs' in chunk : splitWhen p rest
 
--- helpers case-insensitive
+-- chequea si un String empieza con un prefijo (case-insensitive)
 startsCI :: String -> String -> Bool
 startsCI pref s = lower pref `isPrefixOf` lower s
 
@@ -62,17 +62,19 @@ parseSalida raw =
           in (trim before, req)
         _ -> (trim afterArrow, Nothing)
   in case lower leftPart of
-       "norte" -> Just (Norte, Salida destTxt requer Nothing)
-       "n"     -> Just (Norte, Salida destTxt requer Nothing)
-       "sur"   -> Just (Sur, Salida destTxt requer Nothing)
-       "s"     -> Just (Sur, Salida destTxt requer Nothing)
-       "este"  -> Just (Este, Salida destTxt requer Nothing)
-       "e"     -> Just (Este, Salida destTxt requer Nothing)
-       "oeste" -> Just (Oeste, Salida destTxt requer Nothing)
-       "o"     -> Just (Oeste, Salida destTxt requer Nothing)
-       _ -> Nothing
+       "norte"   -> Just (Norte, Salida destTxt requer Nothing)
+       "n"       -> Just (Norte, Salida destTxt requer Nothing)
+       "sur"     -> Just (Sur, Salida destTxt requer Nothing)
+       "s"       -> Just (Sur, Salida destTxt requer Nothing)
+       "este"    -> Just (Este, Salida destTxt requer Nothing)
+       "e"       -> Just (Este, Salida destTxt requer Nothing)
+       "oeste"   -> Just (Oeste, Salida destTxt requer Nothing)
+       "o"       -> Just (Oeste, Salida destTxt requer Nothing)
+       "centro"  -> Just (Centro, Salida destTxt requer Nothing)
+       "c"       -> Just (Centro, Salida destTxt requer Nothing)
+       _         -> Nothing
 
--- helpers locales
+-- lista de palabras separadas por un predicado
 wordsWhen :: (Char -> Bool) -> String -> [String]
 wordsWhen p s = case dropWhile p s of
                   "" -> []
@@ -96,7 +98,7 @@ parseObjetoEnSala raw =
                   then (name, read lastTok)
                   else (s, 1)  -- fallback: todo el string es el id, cantidad 1
 
--- parse de MONSTRUO: acepta "MONSTRUO: id" o con DESC/HP/ATK (simple)
+-- parse de MONSTRUO: acepta "MONSTRUO: id" o con DESC/HP/ATK (simple) no usado actualmente
 parseMonstruo :: [String] -> Maybe Monstruo
 parseMonstruo ls =
   case extraeCampo "MONSTRUO:" ls of
@@ -107,7 +109,7 @@ parseMonstruo ls =
       in Just (Monstruo idToken display hp atk [])
     Nothing -> Nothing
 
--- default stats según id/name (ajústalas)
+-- default stats según id/name (ajústalas) no usado actualmente
 defaultStats :: String -> (Int, Int)
 defaultStats s = case lower s of
   _ | "oso" `isIn` s -> (30,8)
@@ -118,7 +120,7 @@ defaultStats s = case lower s of
   _ -> (10,2)
   where isIn pat txt = pat `isPrefixOf` lower txt || pat `elem` words (lower txt)
 
--- parsing helper para TRAMPA dentro de un bloque SALA
+-- parsea bloque para TRAMPA dentro de un bloque SALA
 parseTrampas :: [String] -> M.Map String Trampa
 parseTrampas ls =
   let bloquesTrap = splitWhen (\l -> startsCI "TRAMPA:" l) ls
@@ -144,6 +146,7 @@ parseTrampas ls =
 -- agrupa lineas en secciones de trap (simple)
 groupTrapBlocks :: [String] -> [[String]]
 groupTrapBlocks ls = filter (not . null) $ splitWhen (startsCI "TRAMPA:") ls
+
 -- parse NPC block
 parseNPC :: [String] -> Maybe NPC
 parseNPC ls =
@@ -228,7 +231,7 @@ cargarMundo fp = do
       let rights' = [r | Right r <- parsed]
           items = [i | Left i <- rights']   -- here Left contains items in our design
           salas = [r | Right r <- rights']
-          mapItems = M.fromList [(objId o, o) | o <- items]
+          mapItems = M.fromList [ (map toLower (objId o), o { objId = map toLower (objId o) }) | o <- items ]
           mapSalas = M.fromList [(salaId s, s) | s <- salas]
       -- validaciones sencillas
       let objetosNoEncontrados = [ (objName, sName)

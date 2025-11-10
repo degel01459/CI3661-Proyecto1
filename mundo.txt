@@ -1,29 +1,8 @@
 ITEM: nota
-DESC: Una nota arrugada que dice "Escapa del laberinto para sobrevivir". Hay manchas de tinta y algún rasguño.
+DESC: Una nota arrugada que dice "Escapa del laberinto para sobrevivir". Hay manchas de tinta y algun rasguno. 8 habitaciones doradas y una salida.
 ---
-ITEM: mapa_parcial_1
-DESC: Fragmento del mapa con marcas del cuadrante noroeste; muestra la habitacion 8 y areas cercanas.
----
-ITEM: mapa_parcial_2
-DESC: Fragmento del mapa con marcas del cuadrante noreste; muestra la habitacion 7 y areas cercanas.
----
-ITEM: mapa_parcial_3
-DESC: Fragmento del mapa con marcas del cuadrante suroeste; muestra la habitacion 6 y areas cercanas.
----
-ITEM: mapa_parcial_4
-DESC: Fragmento del mapa con marcas del cuadrante sureste; muestra la habitacion 5 y areas cercanas.
----
-ITEM: mapa_parcial_5
-DESC: Fragmento del mapa con marcas del cuadrante norte; muestra la habitacion 4 y areas cercanas.
----
-ITEM: mapa_parcial_6
-DESC: Fragmento del mapa con marcas del cuadrante sur; muestra la habitacion 3 y areas cercanas.
----
-ITEM: mapa_parcial_7
-DESC: Fragmento del mapa con marcas del cuadrante oeste; muestra la habitacion 2 y areas cercanas.
----
-ITEM: mapa_parcial_8
-DESC: Fragmento del mapa con marcas del cuadrante este; muestra la habitacion 1 y areas cercanas.
+ITEM: moneda_dorada
+DESC: Moneda dorada que esta regadas por el area. Pueden ser valiosas mejor guardarlas.
 ---
 ITEM: linterna
 DESC: Linterna de mano. Pilas parcialmente cargadas; ilumina pasillos oscuros y revela artefactos.
@@ -32,25 +11,25 @@ ITEM: machete
 DESC: Machete pesado, ideal para abrir paso entre maleza o defenderse de animales pequeños.
 ---
 ITEM: bate
-DESC: Bate de béisbol de madera; buen arma improvisada contra animales pequeños.
+DESC: Bate de beisbol de madera; buen arma improvisada contra animales pequeños.
 ---
 ITEM: cuchillo
-DESC: Cuchillo afilado; fácil de esconder y útil en ataques cuerpo a cuerpo.
+DESC: Cuchillo afilado; facil de esconder y util en ataques cuerpo a cuerpo.
 ---
 ITEM: pistola
-DESC: Pistola pequeña con un solo cartucho; útil para defensa puntual.
+DESC: Pistola pequena con un solo cartucho; util para defensa puntual.
 ---
 ITEM: escopeta
 DESC: Escopeta con un cartucho; potente en espacios cerrados.
 ---
 ITEM: pistola_electrica
-DESC: Pistola eléctrica de corto alcance; incapacita temporalmente a humanos o animales.
+DESC: Pistola electrica de corto alcance; incapacita temporalmente a humanos o animales.
 ---
 ITEM: pistola_sedante
 DESC: Pistola con dardos sedantes; puede neutralizar animales o NPCs sin matarlos.
 ---
 ITEM: granada_humo
-DESC: Granada de humo; útil para crear distracción y escapar.
+DESC: Granada de humo; util para crear distraccion y escapar.
 ---
 ITEM: cuerda
 DESC: Rollo de cuerda resistente de 10 metros; sirve para bajar o amarrar.
@@ -59,10 +38,10 @@ ITEM: tirro_embalar
 DESC: Tiro de embalar (cinta) para inmovilizar de manera improvisada.
 ---
 ITEM: botella_inflamable
-DESC: Botella de vidrio con líquido inflamable improvisado; puede encenderse.
+DESC: Botella de vidrio con liquido inflamable improvisado; puede encenderse.
 ---
 ITEM: vendas
-DESC: Paquete de vendas estériles; cubre heridas.
+DESC: Paquete de vendas esteriles; cubre heridas.
 ---
 ITEM: alcohol
 DESC: Pequeña botella de alcohol para desinfectar heridas.
@@ -71,224 +50,238 @@ ITEM: repelente
 DESC: Spray repelente; reduce la probabilidad de picaduras de araña.
 ---
 ITEM: antidoto
-DESC: Vial de antídoto multiuso; contrarresta veneno de serpiente si se usa rápidamente.
+DESC: Vial de antidoto multiuso; contrarresta veneno de serpiente si se usa rapidamente.
 ---
 ITEM: arco
-DESC: Arco y flechas con sigilo y daño.
+DESC: Arco y flechas con sigilo y dano.
 ---
-ITEM: llave_baul_leon
-DESC: Llave pequeña con una etiqueta desgastada; originalmente colgaba del cuello del león.
+ITEM: llave_baul
+DESC: Llave pequena con una etiqueta desgastada; originalmente colgaba del cuello del leon.
 ---
-ITEM: llave_baul_lobo
-DESC: Llave pequeña con muescas; originalmente colgaba del lobo.
+ITEM: llave_baul
+DESC: Llave pequena con muescas; originalmente colgaba del lobo.
 ---
 ITEM: llave_salida
 DESC: Llave grande y oxidada; cuelga del collar del oso que custodia la salida central.
 ---
-ITEM: baul_armas_LLAVE_REQUERIDA
-DESC: Baúl metálico cerrado; requiere una llave específica para abrirse. Contiene armas potentes al abrirse (definido por el motor).
+ITEM: baul_armas
+DESC: Baul metalico cerrado; requiere una llave especifica para abrirse. Contiene armas potentes al abrirse (definido por el motor).
 ---
 ITEM: nota_rasgada
-DESC: Un trozo de nota con un garabato que indica "ruidos atraen bestias; linterna revela arañas o serpientes".
+DESC: Un trozo de nota con un garabato que indica "ruidos atraen bestias; linterna revela aranas o serpientes".
 ---
 SALA: Habitacion Noroeste
-DESC: Habitación angosta y fría; colchón, mesa con arañazos con un fragmento del mapa y una nota. Se oyen ramas al otro lado. Un machete reposa junto a la pared.
-SALIDA: Este -> Area Conexion Noroeste-Norte
-SALIDA: Sur  -> Area Conexion Noroeste-Suroeste
-OBJETO: mapa_parcial_1 x1
+DESC: Habitacion angosta y fria; colchon, mesa con aranazos y una nota. Se oyen ramas al otro lado. Un machete reposa junto a la pared.
+SALIDA: Oeste -> Area Conexion Noroeste-Norte
+SALIDA: Norte -> Area Conexion Noroeste-Suroeste
+OBJETO: moneda_dorada x1
 OBJETO: machete x1
 OBJETO: nota x1
 NPC: Diego
 ---
 SALA: Habitacion Norte
-DESC: Habitación angosta y fría; colchón, mesa con arañazos con un fragmento del mapa y una nota. Hay una linterna colgada en el perchero.
-SALIDA: Sur -> Area Conexion Noroeste-Norte
-SALIDA: Este -> Area Conexion Noreste-Norte
-OBJETO: mapa_parcial_5 x1
+DESC: Habitacion angosta y fria; colchon, mesa con aranazos y una nota. Hay una linterna colgada en el perchero.
+SALIDA: Este -> Area Conexion Noroeste-Norte
+SALIDA: Oeste -> Area Conexion Noreste-Norte
+OBJETO: moneda_dorada x1
 OBJETO: linterna x1
 OBJETO: nota x1
 NPC: Samuel
 ---
 SALA: Habitacion Noreste
-DESC: Habitación angosta y fría; colchón, mesa con arañazos con un fragmento del mapa y una nota. En la esquina hay seda de araña.
-SALIDA: Oeste -> Area Conexion Noreste-Norte
+DESC: Habitacion angosta y fria; colchon, mesa con aranazos y una nota. En la esquina hay seda de arana.
+SALIDA: Este -> Area Conexion Noreste-Norte
 SALIDA: Sur  -> Area Conexion Noreste-Sureste
-OBJETO: mapa_parcial_2 x1
+OBJETO: moneda_dorada x1
 OBJETO: botella_inflamable x1
 OBJETO: nota x1
 NPC: Mara
 ---
 SALA: Habitacion Oeste
-DESC: Habitación angosta y fría; colchón, mesa con arañazos con un fragmento del mapa y una nota. Ademas hay una cuerda y un rollo de tirro de embalar.
+DESC: Habitacion angosta y fria; colchon, mesa con aranazos y una nota. Ademas hay una cuerda y un rollo de tirro de embalar.
 SALIDA: Este -> Centro Interseccion Oeste
-SALIDA: Norte -> Area Conexion Noroeste-Suroeste
+SALIDA: Oeste -> Area Conexion Noroeste-Suroeste
+OBJETO: moneda_dorada x1
 OBJETO: cuerda x1
 OBJETO: tirro_embalar x1
 OBJETO: nota x1
 NPC: Karla
 ---
 SALA: Habitacion Este
-DESC: Habitación angosta y fría; colchón, mesa con arañazos con un fragmento del mapa y una nota. la mesa tiene una gaveta con una pistola pequeña parcialmente cargada.
+DESC: Habitacion angosta y fria; colchon, mesa con aranazos y una nota. la mesa tiene una gaveta con una pistola pequena parcialmente cargada.
 SALIDA: Oeste -> Centro Interseccion Este
-SALIDA: Sur  -> Area Conexion Noreste-Sureste
-OBJETO: mapa_parcial_4 x1
+SALIDA: Este  -> Area Conexion Noreste-Sureste
+OBJETO: moneda_dorada x1
 OBJETO: pistola x1
 OBJETO: nota x1
 NPC: Javier
 ---
 SALA: Habitacion Suroeste
-DESC: Habitación angosta y fría; colchón, mesa con arañazos con un fragmento del mapa y una nota. Restos de comida. Una médica guardó un botiquín aquí.
-SALIDA: Norte -> Area Conexion Noroeste-Suroeste
+DESC: Habitacion angosta y fria; colchon, mesa con aranazos y una nota. Restos de comida. Una medica guardo un botiquin aqui.
+SALIDA: Sur -> Area Conexion Noroeste-Suroeste
 SALIDA: Este -> Area Conexion Suroeste-Sur
-OBJETO: mapa_parcial_6 x1
+OBJETO: moneda_dorada x1
 OBJETO: alcohol x1
 OBJETO: antidoto x1
 OBJETO: nota x1
 NPC: Laura
 ---
 SALA: Habitacion Sur
-DESC: Habitación angosta y fría; colchón, mesa con arañazos con un fragmento del mapa y una nota. Un bate está apoyado en la pared.
-SALIDA: Norte -> Area Conexion Suroeste-Sur
-SALIDA: Este -> Area Conexion Sureste-Sur
-OBJETO: mapa_parcial_7 x1
+DESC: Habitacion angosta y fria; colchon, mesa con aranazos y una nota. Un bate esta apoyado en la pared.
+SALIDA: Este -> Area Conexion Suroeste-Sur
+SALIDA: Oeste -> Area Conexion Sureste-Sur
+OBJETO: moneda_dorada x1
 OBJETO: bate x1
 OBJETO: nota x1
 ---
 SALA: Habitacion Sureste
-DESC: Habitación angosta y fría; colchón, mesa con arañazos con un fragmento del mapa y una nota. Una abogada revisa papeles aquí.
-SALIDA: Norte -> Area Conexion Sureste-Sur
-SALIDA: Oeste -> Habitacion Centro
-OBJETO: mapa_parcial_8 x1
+DESC: Habitacion angosta y fria; colchon, mesa con aranazos y una nota. hay papeles en el suelo aqui.
+SALIDA: Oeste -> Area Conexion Sureste-Sur
+SALIDA: Este -> Area Conexion Noreste-Sureste
+OBJETO: moneda_dorada x1
 OBJETO: cuerda x1
 OBJETO: nota x1
 NPC: Elena
 ---
-SALA: Habitacion Centro
-DESC: Sala central amplia con una puerta metálica cerrada que conduce fuera del laberinto. La puerta está custodiada por un gran oso en una jaula improvisada; el oso lleva la llave de salida colgada en su collar.
+SALA: Centro del Laberinto
+DESC: Sala central amplia con una puerta metalica cerrada que conduce fuera del laberinto. La puerta esta custodiada por un gran oso en una jaula improvisada; el oso lleva la llave de salida colgada en su collar.
 SALIDA: Oeste -> Centro Interseccion Oeste
 SALIDA: Este -> Centro Interseccion Este
 SALIDA: Norte -> Area Conexion Noreste-Norte
 SALIDA: Sur  -> Area Conexion Sureste-Sur
+SALIDA: centro -> Salida del Laberinto
 TRAMPA: oso_guardian
-DESC: Oso enorme custodia la salida; sin escopeta te puede infligir daño severo.
+DESC: Oso enorme custodia la salida; sin escopeta te puede infligir dano severo.
 REQUIERE: escopeta
-DAÑO: 25
+DANIO: 25
 TIPO: gigante
 OBJETO: llave_salida x1
 ---
+SALA: Salida del Laberinto
+DESC: Puerta metalica reforzada que conduce fuera del laberinto. Necesitas la llave que lleva el oso para abrirla y las 8 monedas doradas para escapar.
+---
 SALA: Area Conexion Noroeste-Norte
-DESC: Zona de pasillo con huellas y una pequeña protuberancia en la pared donde se ve seda. Hay un bote de repelente en una grieta.
-SALIDA: Norte -> Habitacion Norte
-SALIDA: Oeste -> Habitacion Noroeste
+DESC: Zona de pasillo con huellas y una pequena protuberancia en la pared donde se ve seda. Hay un bote de repelente en una grieta.
+SALIDA: Sur -> Habitacion Norte
+SALIDA: Este -> Habitacion Noroeste
+SALIDA: Norte  -> Pasillo sin Salida
 OBJETO: repelente x1
 TRAMPA: aranas_paralizantes
-DESC: Arañas pequeñas con veneno paralizante en grietas de la pared.
+DESC: Aranas pequenas con veneno paralizante en grietas de la pared.
 REQUIERE: repelente
-DAÑO: 6
+DANIO: 6
 TIPO: venenosa
 ---
 SALA: Area Conexion Noreste-Norte
-DESC: Pasillo corto con sombras y pequeñas grietas donde se ven serpientes. Hay un hueco con vendas.
-SALIDA: Norte -> Habitacion Norte
-SALIDA: Este -> Habitacion Noreste
+DESC: Pasillo corto con sombras y pequenas grietas donde se ven serpientes. Hay un hueco con vendas.
+SALIDA: Sur -> Habitacion Norte
+SALIDA: Oeste -> Habitacion Noreste
+SALIDA: Norte  -> Pasillo sin Salida
 OBJETO: vendas x1
 TRAMPA: serpiente_venenosa
-DESC: Serpientes venenosas en las grietas; sin luz es fácil pisarlas.
+DESC: Serpientes venenosas en las grietas; sin luz es facil pisarlas.
 REQUIERE: linterna
-DAÑO: 8
+DANIO: 8
 TIPO: venenosa
 ---
 SALA: Centro Interseccion Oeste
-DESC: Intersección amplia con marcas en el suelo. Desde aquí se accede al centro (Habitacion Centro), al Oeste (Habitacion Oeste) y al Sur (Area Conexion Suroeste-Sur).
-SALIDA: Este -> Habitacion Centro
-SALIDA: Oeste -> Habitacion Oeste
-SALIDA: Sur  -> Area Conexion Noroeste-Suroeste
-OBJETO: mapa_parcial_3 x1
+DESC: Interseccion amplia con marcas en el suelo. Desde aqui se accede al Centro del Laberinto, al Oeste (Habitacion Oeste) y al Sur (Area Conexion Suroeste-Sur).
+SALIDA: Sur -> Centro del Laberinto
+SALIDA: Norte -> Habitacion Oeste
+SALIDA: Este -> Area Conexion Noroeste-Suroeste
+TRAMPA: trampa_plantas_venenosas
+DESC: Plantas venenosas que brotan del suelo; sin machete o botella_inflamable pueden causar dano.
+REQUIERE: machete, botella_inflamable
+DANIO: 10
+TIPO: venenosa
 ---
 SALA: Area Conexion Noroeste-Suroeste
-DESC: Pasillo con olor a tierra; algunas serpientes anaconda se han visto en las rendijas. Hay un pequeño desfiladero que puede cruzarse con cuerda.
-SALIDA: Norte -> Habitacion Noroeste
+DESC: Pasillo con olor a tierra; algunas serpientes anaconda se han visto en las rendijas. Hay un pequeno desfiladero que puede cruzarse con cuerda.
+SALIDA: Oeste -> Habitacion Noroeste
 SALIDA: Sur  -> Centro Interseccion Oeste
 SALIDA: Este -> Habitacion Suroeste
+SALIDA: Oeste -> Pasillo sin Salida
 TRAMPA: serpiente_anaconda
-DESC: Una anaconda que se esconde en las rendijas; sin machete puede causar mucho daño.
+DESC: Una anaconda que se esconde en las rendijas; sin machete puede causar mucho dano.
 REQUIERE: machete
-DAÑO: 12
+DANIO: 12
 TIPO: grande
 ---
 SALA: Area Conexion Suroeste-Sur
-DESC: Zona oscura con pilastra central donde se oyen ruidos estremecedores. En un nicho hay un baúl cerrado (baul de armas).
-SALIDA: Norte -> Centro Interseccion Oeste
-OBJETO: baul_armas_LLAVE_REQUERIDA x1
+DESC: Zona oscura con pilastra central donde se oyen ruidos estremecedores. En un nicho hay un baul cerrado (baul de armas).
+SALIDA: Este -> Centro Interseccion Oeste
+SALIDA: Sur -> Pasillo sin Salida
+OBJETO: baul_armas x1
 ---
 SALA: Area Conexion Sureste-Sur
-DESC: Pasillo con telas de araña y pequeñas grietas. Es zona de serpientes y arañas.
+DESC: Pasillo con telas de arana y pequenas grietas. Es zona de serpientes y aranas.
 SALIDA: Norte -> Habitacion Sur
 SALIDA: Oeste -> Centro Interseccion Este
 SALIDA: Sur  -> Habitacion Sureste
 TRAMPA: aranas_paralizantes_2
-DESC: Bancos de arañas en las paredes; sin repelente son peligrosas.
+DESC: Bancos de aranas en las paredes; sin repelente son peligrosas.
 REQUIERE: repelente
-DAÑO: 6
-TIPO: venenosa
-TRAMPA: serpiente_pequena
-DESC: Serpientes pequeñas en grietas; evítalas con linterna.
-REQUIERE: linterna
-DAÑO: 6
+DANIO: 6
 TIPO: venenosa
 ---
 SALA: Centro Interseccion Este
-DESC: Intersección con marcas de garras y telas de araña. En una esquina hay un arco apoyado con flechas.
-SALIDA: Oeste -> Habitacion Centro
-SALIDA: Este -> Habitacion Este
+DESC: Interseccion con marcas de garras y telas de arana. En una esquina hay un arco apoyado con flechas.
+SALIDA: Norte -> Centro del Laberinto
+SALIDA: Oeste -> Habitacion Este
 SALIDA: Sur  -> Area Conexion Noreste-Sureste
+SALIDA: Este -> Pasillo sin Salida
 OBJETO: arco x1
+TRAMPA: serpiente_pequena
+DESC: Serpientes pequenas en grietas; evitarlas con linterna.
+REQUIERE: linterna
+DANIO: 6
+TIPO: venenosa
 ---
 SALA: Area Conexion Sureste-Sur
-DESC: Pasillo con grietas y telas de araña. Hay un nicho con un baúl cerrado (baul de armas).
+DESC: Pasillo con grietas y telas de arana. Hay un nicho con un baul cerrado (baul de armas).
 SALIDA: Norte -> Habitacion Este
 SALIDA: Oeste -> Habitacion Sureste
-OBJETO: baul_armas_LLAVE_REQUERIDA x1
+OBJETO: baul_armas x1
 ---
 SALA: Area Conexion Noreste-Sureste
-DESC: Pasillo estrecho y húmedo con una rejilla metálica en el techo. El tramo central del suelo muestra signos de colapso: hay un agujero oculto cubierto parcialmente por escombros. Desde aquí puedes acceder a la Habitacion Noreste, a la Habitacion Este y bajar hacia la Habitacion Sureste.
-SALIDA: Norte -> Habitacion Noreste
+DESC: Pasillo estrecho y humedo con una rejilla metalica en el techo. El tramo central del suelo muestra signos de colapso: hay un agujero oculto cubierto parcialmente por escombros.
+SALIDA: Sur -> Habitacion Noreste
 SALIDA: Oeste -> Habitacion Este
-SALIDA: Sur  -> Habitacion Sureste
+SALIDA: Norte  -> Habitacion Sureste
 OBJETO: nota_rasgada x1
 TRAMPA: agujero_oculto
 DESC: Trampa de suelo colapsable: si no la atraviesas correctamente caes y te lesionas.
 REQUIERE: cuerda
-DAÑO: 10
+DANIO: 10
 TIPO: agujero
 ---
-SALA: Pasillo Muerto Este Baul
-DESC: Pasillo sin salida que termina en un baúl metálico con cerradura; dentro hay armas potentes. El baúl requiere la llave que lleva el león.
+SALA: Pasillo sin Salida
+DESC: Pasillo sin salida que termina en un baul metalico con cerradura; dentro hay armas potentes. El baul requiere la llave que lleva el leon.
 SALIDA: Oeste -> Area Conexion Noreste-Norte
-OBJETO: baul_armas_LLAVE_REQUERIDA x1
+OBJETO: baul_armas x1
 ---
-SALA: Pasillo Muerto Oeste Baul
-DESC: Pasillo sin salida que termina en otro baúl metálico con cerradura; dentro hay munición y una pistola sedante. El baúl requiere la llave que lleva el lobo.
-SALIDA: Este -> Area Conexion Noroeste-Suroeste
-OBJETO: baul_armas_LLAVE_REQUERIDA x1
+SALA: Pasillo sin Salida
+DESC: Pasillo sin salida que termina en otro baul metalico con cerradura; dentro hay municion y una pistola sedante. El baul requiere la llave que lleva el lobo.
+SALIDA: Sur -> Area Conexion Noroeste-Suroeste
+OBJETO: baul_armas x1
 ---
-SALA: Zona del Leon
-DESC: Cámara amplia, olor a metal. Un león adulto marca su territorio y tiene una pequeña llave colgando del cuello.
+SALA: Pasillo sin Salida
+DESC: Camara amplia, olor a metal. Un leon adulto marca su territorio y tiene una pequena llave colgando del cuello.
 SALIDA: Oeste -> Area Conexion Noreste-Norte
 TRAMPA: leon_guardia
-DESC: León adulto que bloquea un nicho; para neutralizarlo sin daño necesitas una pistola sedante.
+DESC: Leon adulto que bloquea un nicho; para neutralizarlo sin dano necesitas una pistola sedante.
 REQUIERE: pistola_sedante
-DAÑO: 15
+DANIO: 15
 TIPO: grande
-OBJETO: llave_baul_leon x1
+OBJETO: llave_baul x1
 ---
-SALA: Zona del Lobo
-DESC: Rincón rocoso con huellas de varias patas. Un lobo alfa tiene una llave colgando del cuello.
-SALIDA: Este -> Area Conexion Noroeste-Suroeste
+SALA: Pasillo sin Salida
+DESC: Rincon rocoso con huellas de varias patas. Un lobo alfa tiene una llave colgando del cuello.
+SALIDA: Oeste -> Area Conexion Noroeste-Suroeste
 TRAMPA: lobo_guardia
-DESC: Lobo alfa que vigila su terreno; una pistola sedante o arma potente evita el daño.
+DESC: Lobo alfa que vigila su terreno; una pistola sedante o arma potente evita el dano.
 REQUIERE: pistola_sedante
-DAÑO: 12
+DANIO: 12
 TIPO: grande
-OBJETO: llave_baul_lobo x1
+OBJETO: llave_baul x1
 ---

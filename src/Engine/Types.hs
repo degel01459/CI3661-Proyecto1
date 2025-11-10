@@ -36,7 +36,7 @@ type NombreNPC = String
 type Cantidad = Int
 
 -- Direcciones posibles
-data Direccion = Norte | Sur | Este | Oeste
+data Direccion = Norte | Sur | Este | Oeste | Centro
   deriving (Eq, Ord, Show, Read)
 
 -- Salida: destino + posible bloqueo (requiere un item) + descripción opcional
@@ -62,7 +62,7 @@ data Objeto = Objeto
 -- Inventario (apilable): mapa objeto -> cantidad
 type Inventario = M.Map NombreObjeto Cantidad
 
--- Monstruo simple
+-- Monstruo simple no se usa actualmente
 data Monstruo = Monstruo
   { monId   :: ID
   , monNombre :: Nombre
@@ -71,6 +71,7 @@ data Monstruo = Monstruo
   , monLoot :: [(NombreObjeto, Cantidad)]
   } deriving (Eq, Show)
 
+-- Tipos de trampas
 data TrapType = TrampaVenenosa | TrampaAgujero | TrampaCandado | TrampaRed | TrampaNone
   deriving (Eq, Show)
 

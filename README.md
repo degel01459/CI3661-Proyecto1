@@ -3,7 +3,21 @@
 - **Nombres:** Kevin Briceño
 - **Carnets:** 15-11661
 
----
+## Estructura del Proyecto
+CI3661-PROYECTO1
+->app
+	|->Main.hs
+->src
+	|->Engine
+		|->Corehs
+		|->Parser.hs
+		|->Persistence.hs
+		|->Types.hs
+->mundo.txt
+->package.yaml
+->Proyecto_1_Laboratorio_de_Lenguajes_de_programación.pdf
+->README.md
+->stack.yaml
 
 ## Cómo Compilar y Ejecutar
 
@@ -14,13 +28,13 @@ Este proyecto usa `stack`. Para compilarlo y ejecutarlo:
 
 ---
 ## Justificación de Diseño
-
+Este proyecto implementa un motor de aventura de texto en Haskell. A continuación se detallan las decisiones de diseño tomadas:
 
 ### 1. Elección de Estructuras de Datos
 
 Usamos Map NombreSala Sala (habitaciones) y Map NombreObjeto Objeto (objetos) en lugar de listas. Justificación:
 
-Ventaja: búsquedas por nombre, inserciones y actualizaciones claras y eficientes (O(log n)). Muy útil cuando el mundo crece.
+Ventaja: búsquedas por nombre, inserciones y actualizaciones claras y eficientes. Muy útil cuando el mundo crece.
 
 Desventaja: código ligeramente más verboso que con listas, pero más seguro y escalable.
 
