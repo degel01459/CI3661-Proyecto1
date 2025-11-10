@@ -138,7 +138,7 @@ gameLoop estado =
       hFlush stdout
       linea <- getLine
       case parsearComando linea of
-        Nothing -> putStrLn "Comando inválido." >> gameLoop estado
+        Nothing -> putStrLn "Comando invalido." >> gameLoop estado
         Just comando -> do
           let (msgBase, estadoIntermedio) = procesarComando comando estado
 

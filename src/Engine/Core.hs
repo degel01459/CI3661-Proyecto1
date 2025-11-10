@@ -144,7 +144,7 @@ procesarComando cmd estado = case cmd of
   CmdMirar ->
     let salaAct = lookupSala (ubicacion estado) (habitaciones estado)
         baseMsg = case salaAct of
-          Nothing -> "Estás en un lugar desconocido."
+          Nothing -> "Estas en un lugar desconocido."
           Just s  -> mostrarSala s (catalogoObjetos estado)
         estadoCondTxt = case estadoCondicion estado of
                           Nothing -> "Normal"
@@ -169,10 +169,10 @@ procesarComando cmd estado = case cmd of
     let cur = ubicacion estado
         hs  = habitaciones estado
     in case lookupSala cur hs of
-         Nothing -> ("No sé dónde estás.", estado)
+         Nothing -> ("No se dónde estas.", estado)
          Just sala ->
            case M.lookup dir (salidasSala sala) of
-             Nothing -> ("No puedes ir en esa dirección.", estado)
+             Nothing -> ("No puedes ir en esa direccion.", estado)
              Just salida ->
                case bloqueadaPor salida of
                  Just llave -> ("La salida está bloqueada. Parece necesitar: " ++ llave, estado)
@@ -198,7 +198,7 @@ procesarComando cmd estado = case cmd of
                                   [ if faltaLlave then "Te falta la llave que trae el oso." else ""
                                   , if faltaMonedasOMapa then "Te faltan las 8 monedas doradas." else ""
                                   ]
-                            in ( "La puerta hacia fuera está ahí, pero no puedes pasar: " ++ msgFalta
+                            in ( "La puerta hacia fuera esta ahi, pero no puedes pasar: " ++ msgFalta
                                , estado )
                         else
                           -- movimiento normal: solo actualizamos ubicacion y devolvemos aviso.
@@ -212,13 +212,13 @@ procesarComando cmd estado = case cmd of
         hs = habitaciones estado
         mSala = lookupSala cur hs
     in case mSala of
-         Nothing -> ("Sala actual inválida.", estado)
+         Nothing -> ("Sala actual invalida.", estado)
          Just sala ->
            case M.lookup key (objetosSala sala) of
-             Nothing -> ("No encuentro " ++ nombreObj ++ " aquí.", estado)
+             Nothing -> ("No encuentro " ++ nombreObj ++ " aqui.", estado)
              Just qty ->
                if qty <= 0
-               then ("No hay unidades de " ++ nombreObj ++ " aquí.", estado)
+               then ("No hay unidades de " ++ nombreObj ++ " aqui.", estado)
                else
                  let nuevaObjsSala = if qty == 1 then M.delete key (objetosSala sala)
                                      else M.insert key (qty - 1) (objetosSala sala)
@@ -264,7 +264,7 @@ procesarComando cmd estado = case cmd of
                        else
                          let inv' = quitarInventario "llave_salida" 1 (inventarioJugador estado)
                              estado' = estado { inventarioJugador = inv', ejecutando = False }
-                         in ("Has abierto la puerta y escapado. ¡Victoria!", estado')
+                         in ("Has abierto la puerta y escapado del laberinto.", estado')
              _ ->
               let -- helper: buscar descripción en el catálogo
                   descripcionSiExiste oid =
