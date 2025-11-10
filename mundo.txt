@@ -6,43 +6,33 @@ DESC: Moneda dorada que esta regadas por el area. Pueden ser valiosas mejor guar
 ---
 ITEM: linterna
 DESC: Linterna de mano. Pilas parcialmente cargadas; ilumina pasillos oscuros y ayuda a detectar peligros.
-PESO: 2
 ---
 ITEM: machete
 DESC: Machete pesado, ideal para abrir paso entre maleza o defenderse de animales.
-PESO: 4
 ---
 ITEM: bate
 DESC: Bate de béisbol de madera; arma improvisada para defensa.
-PESO: 3
 ---
 ITEM: pistola
 DESC: Pistola pequeña con un solo cartucho; útil para defensa puntual.
-PESO: 3
 ---
 ITEM: cuerda
 DESC: Rollo de cuerda resistente de 10 metros; sirve para bajar o asegurar.
-PESO: 3
 ---
 ITEM: vendas
 DESC: Paquete de vendas estériles; cura heridas leves.
-PESO: 1
 ---
 ITEM: repelente
 DESC: Spray repelente; reduce la probabilidad de picaduras de insectos o arañas.
-PESO: 1
 ---
 ITEM: botiquin
 DESC: Botiquín multiuso; al usarlo recuperas +15 HP y neutraliza condiciones negativas si las hubiera.
-PESO: 2
 ---
 ITEM: llave_salida
 DESC: Llave grande y oxidada; cuelga del collar del oso que custodia la salida central.
-PESO: 1
 ---
 ITEM: mascarilla
 DESC: Mascarilla improvisada / respirador; protege contra gases tóxicos en pequeñas concentraciones.
-PESO: 1
 ---
 
 SALA: Habitacion Noroeste
