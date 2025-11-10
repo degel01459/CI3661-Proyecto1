@@ -27,12 +27,20 @@ Este proyecto usa `stack`. Para compilarlo y ejecutarlo:
 1.  **Compilar:** `stack build`
 2.  **Ejecutar:** `stack exec TextAdventureEngine-exe`
 
-## Descripción General (detallada)
+## Descripción General
 
 Este proyecto es un **motor de aventura de texto**:
 
 - **Movimiento entre salas**  
   - Controlado por el Map Direccion Salida. Se utiliza el comando ir <dirección> tras verificar la existencia y el estado de bloqueo de la salida.
+  ```
+  Mapa del Laberinto
+  NO	 		  N			    NE
+      NO-N		  NE-N
+  O 	C-O		C 	C-E		E
+      SO-S		  SE-S
+  SO 			  S 			  SE
+  ```
 
 - **Exploración / inspección**  
   - Muestra al jugador la descripción de la sala actual, el listado de salidas accesibles, los objetos presentes y la ubicación de los NPCs.

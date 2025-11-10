@@ -241,7 +241,7 @@ procesarComando cmd estado = case cmd of
     in case M.lookup nombreObj inv of
          Nothing -> ("No tienes " ++ nombreObj ++ " en tu inventario.", estado)
          Just qty ->
-           -- casos especiales: vendas, antidoto, llaves, linterna
+           -- casos especiales: vendas, botiquin, llave_salidas, linterna
            case nombreObj of
              "vendas" ->
                let saludN = min 100 (saludJugador estado + 8)
@@ -249,11 +249,12 @@ procesarComando cmd estado = case cmd of
                    nuevoPeso = calcularPeso inv' (catalogoObjetos estado)
                    estado' = estado { saludJugador = saludN, inventarioJugador = inv', pesoActual = nuevoPeso }
                in ("Te vendaste. Salud actual: " ++ show saludN, estado')
-             "antidoto" ->
-               let inv' = quitarInventario "antidoto" 1 inv
+             "botiquin" ->
+               let saludN = min 100 (saludJugador estado + 15)
+                   inv' = quitarInventario "botiquin" 1 inv
                    nuevoPeso = calcularPeso inv' (catalogoObjetos estado)
-                   estado' = estado { estadoCondicion = Nothing, inventarioJugador = inv', pesoActual = nuevoPeso }
-               in ("Has aplicado el antidoto. Ya no estas envenenado.", estado')
+                   estado' = estado { saludJugador = saludN, inventarioJugador = inv', pesoActual = nuevoPeso }
+               in ("Has usado el botiquín. Salud actual: " ++ show saludN, estado')
              "llave_salida" ->
                let salaCentralNombre = "Salida del Laberinto"  -- ajusta si tu mundo usa otro nombre
                in if ubicacion estado /= salaCentralNombre
