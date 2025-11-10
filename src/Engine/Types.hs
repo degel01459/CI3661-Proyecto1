@@ -1,6 +1,3 @@
--- Autor: Kevin Briceño
--- Carnet: 15-11661
--- src/Engine/Types.hs
 module Engine.Types
   ( ID
   , Nombre
@@ -62,7 +59,7 @@ data Objeto = Objeto
 -- Inventario (apilable): mapa objeto -> cantidad
 type Inventario = M.Map NombreObjeto Cantidad
 
--- Monstruo simple no se usa actualmente
+-- Monstruo simple
 data Monstruo = Monstruo
   { monId   :: ID
   , monNombre :: Nombre
@@ -71,17 +68,16 @@ data Monstruo = Monstruo
   , monLoot :: [(NombreObjeto, Cantidad)]
   } deriving (Eq, Show)
 
--- Tipos de trampas
-data TrapType = TrampaVenenosa | TrampaAgujero | TrampaCandado | TrampaRed | TrampaNone
+data TrapType = TrampaVenenosa | TrampaAgujero | TrampaAnimal | TrampaNone
   deriving (Eq, Show)
 
 data Trampa = Trampa
-  { trapId        :: String           -- id corto p.ej. "serpientes_paso"
+  { trapId        :: String
   , trapTipo      :: TrapType
   , trapDescripcion :: String
-  , trapRequiereItem :: Maybe NombreObjeto -- item que evita o desactiva
-  , trapDaño      :: Int              -- daño si no tienes el item
-  , trapBloqueaSalidas :: Bool        -- si impide seguir (true/false)
+  , trapRequiereItem :: Maybe NombreObjeto
+  , trapDaño      :: Int
+  , trapBloqueaSalidas :: Bool
   } deriving (Eq, Show)
 
 -- Disposición de NPCs

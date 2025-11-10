@@ -80,23 +80,24 @@ wordsWhen p s = case dropWhile p s of
                   "" -> []
                   s' -> w : wordsWhen p s'' where (w,s'') = break p s'
 
--- parsea "OBJETO: id" o "OBJETO: id xN" -> (id, cantidad)
+-- parsea "OBJETO: id" o "OBJETO: id xN" -> (id_en_minusculas, cantidad)
 parseObjetoEnSala :: String -> (NombreObjeto, Cantidad)
 parseObjetoEnSala raw =
   let s = trim raw
       tokens = words s
+      lowerName n = map toLower n
   in case tokens of
        [] -> ("", 1)
-       [single] -> (single, 1)
+       [single] -> (lowerName single, 1)
        _ ->
          let lastTok = last tokens
              nameTokens = init tokens
              name = unwords nameTokens
          in if (not (null lastTok) && head lastTok == 'x' && all (`elem` ['0'..'9']) (tail lastTok))
-               then (name, read (tail lastTok))
+               then (lowerName name, read (tail lastTok))
                else if all (`elem` ['0'..'9']) lastTok
-                  then (name, read lastTok)
-                  else (s, 1)  -- fallback: todo el string es el id, cantidad 1
+                  then (lowerName name, read lastTok)
+                  else (lowerName s, 1)
 
 -- parse de MONSTRUO: acepta "MONSTRUO: id" o con DESC/HP/ATK (simple) no usado actualmente
 parseMonstruo :: [String] -> Maybe Monstruo
@@ -123,13 +124,13 @@ defaultStats s = case lower s of
 -- parsea bloque para TRAMPA dentro de un bloque SALA
 parseTrampas :: [String] -> M.Map String Trampa
 parseTrampas ls =
-  let bloquesTrap = splitWhen (\l -> startsCI "TRAMPA:" l) ls
+  let bloques = groupTrapBlocks ls
       parseOne trapLines =
         case extraeCampo "TRAMPA:" trapLines of
           Nothing -> Nothing
           Just tid ->
             let desc = fromMaybe "" (extraeCampo "DESC:" trapLines)
-                req  = extraeCampo "REQUIERE:" trapLines
+                req  = fmap trim (extraeCampo "REQUIERE:" trapLines)
                 dan  = case extraeCampo "DANIO:" trapLines of
                          Just n -> case reads n of ((v,_):_) -> v; _ -> 0
                          Nothing -> 0
@@ -137,15 +138,23 @@ parseTrampas ls =
                 ttype = case tipoTxt of
                            Just t | "ven" `isPrefixOf` t -> TrampaVenenosa
                            Just t | "aguj" `isPrefixOf` t -> TrampaAgujero
-                           Just t | "cand" `isPrefixOf` t -> TrampaCandado
+                           Just t | "ani" `isPrefixOf` t -> TrampaAnimal
                            _ -> TrampaNone
                 tr = Trampa tid ttype desc req dan True
             in Just (tid, tr)
-  in M.fromList (catMaybes (map parseOne (groupTrapBlocks ls)))
+  in M.fromList (catMaybes (map parseOne bloques))
 
--- agrupa lineas en secciones de trap (simple)
+-- agrupa líneas en bloques de TRAMPA: cada bloque empieza en la línea que contiene "TRAMPA:"
 groupTrapBlocks :: [String] -> [[String]]
-groupTrapBlocks ls = filter (not . null) $ splitWhen (startsCI "TRAMPA:") ls
+groupTrapBlocks ls = go ls []
+  where
+    go [] acc = reverse acc
+    go (l:rest) acc
+      | startsCI "TRAMPA:" l =
+          -- tomar esta línea + todas las siguientes hasta la próxima "TRAMPA:" o fin
+          let (blkTail, rest') = span (not . startsCI "TRAMPA:") rest
+          in go rest' ((l : blkTail) : acc)
+      | otherwise = go rest acc
 
 -- parse NPC block
 parseNPC :: [String] -> Maybe NPC
@@ -162,20 +171,20 @@ parseItem :: [String] -> Maybe Objeto
 parseItem ls =
   case extraeCampo "ITEM:" ls of
     Just idToken ->
-      let desc = fromMaybe "" (extraeCampo "DESC:" ls)
+      let idTrim = trim idToken
+          idLower = map toLower idTrim
+          desc = fromMaybe "" (extraeCampo "DESC:" ls)
           tipoTxt = fmap (map toLower) (extraeCampo "TIPO:" ls)
           tipo = case tipoTxt of
                    Just t | "llave" `isPrefixOf` t -> Llave
-                   Just t | "arma" `isPrefixOf` t -> Arma
-                   Just t | "consum" `isPrefixOf` t -> Consumible
-                   Just t | "herr" `isPrefixOf` t -> Herramienta
+                   Just t | "arma" `isPrefixOf` t  -> Arma
+                   Just t | "consum" `isPrefixOf` t-> Consumible
+                   Just t | "herr" `isPrefixOf` t  -> Herramienta
                    _ -> Miscelaneo
           peso = case extraeCampo "PESO:" ls of
-                   Just p -> case reads p of
-                               ((n,_):_) -> n
-                               _ -> 1
+                   Just p -> case reads p of ((n,_):_) -> n; _ -> 1
                    Nothing -> 1
-      in Just (Objeto idToken idToken desc tipo peso)
+      in Just (Objeto idLower idTrim desc tipo peso)
     Nothing -> Nothing
 
 -- parse SALA block

@@ -6,9 +6,13 @@ module Engine.Core (procesarComando, resolverTrampasAlEntrar) where
 import Engine.Types
 import qualified Data.Map as M
 import Data.Maybe (fromMaybe)
-import Data.Char (toLower)
+import Data.Char (toLower, isSpace)
 import Data.List (isPrefixOf)
 import qualified Data.Map as M
+
+-- util: trim local (elimina espacios al inicio y fin)
+trim :: String -> String
+trim = reverse . dropWhile isSpace . reverse . dropWhile isSpace
 
 -- acciones de inventario
 añadirInventario :: NombreObjeto -> Cantidad -> Inventario -> Inventario
@@ -100,13 +104,13 @@ resolverTrampasAlEntrar sala estado =
               let dmg = trapDaño tr
                   nuevaSalud = saludJugador st - dmg
                   st' = st { saludJugador = nuevaSalud }
-                  msg = "Activaste trampa (" ++ trapId tr ++ "): " ++ trapDescripcion tr ++ " — recibes " ++ show dmg ++ " daño."
+                  msg = "Activaste trampa (" ++ trapId tr ++ "): " ++ trapDescripcion tr ++ " Recibes " ++ show dmg ++ " dano."
               in (msgs ++ [msg], st')
           Nothing ->
             let dmg = trapDaño tr
                 nuevaSalud = saludJugador st - dmg
                 st' = st { saludJugador = nuevaSalud }
-                msg = "Trampa activa: " ++ trapDescripcion tr ++ ". Recibes " ++ show dmg ++ " daño."
+                msg = "Trampa activa: " ++ trapDescripcion tr ++ ". Recibes " ++ show dmg ++ " dano."
             in (msgs ++ [msg], st')
 
       (mensajes, estadoFinal) = foldl apply ([], estado) traps
@@ -163,12 +167,12 @@ procesarComando cmd estado = case cmd of
 
   CmdIr dir ->
     let cur = ubicacion estado
-        hs = habitaciones estado
+        hs  = habitaciones estado
     in case lookupSala cur hs of
-         Nothing -> ("No se donde estas.", estado)
+         Nothing -> ("No sé dónde estás.", estado)
          Just sala ->
            case M.lookup dir (salidasSala sala) of
-             Nothing -> ("No puedes ir en esa direccion.", estado)
+             Nothing -> ("No puedes ir en esa dirección.", estado)
              Just salida ->
                case bloqueadaPor salida of
                  Just llave -> ("La salida está bloqueada. Parece necesitar: " ++ llave, estado)
@@ -177,27 +181,16 @@ procesarComando cmd estado = case cmd of
                    in if not (M.member dest hs)
                       then ("La salida apunta a una sala inexistente: " ++ dest, estado)
                       else
-                        -- bloqueo especial: si el destino es la "Salida del Laberinto" impor condiciones
+                        -- Si es la salida final, comprobamos requisitos aquí (no aplicamos trampas)
                         if dest == "Salida del Laberinto"
                         then
                           if puedeIntentarSalida estado
                           then
-                            -- permitir entrar y activar trampas (si hubiera)
                             let estadoMov = estado { ubicacion = dest }
-                                salaDest = fromMaybe (error "sala inexistente") (lookupSala dest hs)
-                                (msgTrampas, estadoConTrampas) = resolverTrampasAlEntrar salaDest estadoMov
-                                aviso = "Te desplazas a " ++ dest ++ "."
-                                fullMsg = if null msgTrampas then aviso else aviso ++ "\n" ++ msgTrampas
-                                -- Si al entrar estás en la sala de salida y cumples requisitos, terminas
-                                finalMsg = if puedeIntentarSalida estadoConTrampas
-                                           then fullMsg ++ "\nHas utilizado la llave y las monedas/mapa — ¡Has escapado del laberinto!"
-                                           else fullMsg
-                                estadoFinal = if puedeIntentarSalida estadoConTrampas
-                                              then estadoConTrampas { ejecutando = False }
-                                              else estadoConTrampas
-                            in (finalMsg, estadoFinal)
+                                msg = "Te desplazas a " ++ dest ++ ". Has usado la llave y las monedas/mapa — ¡Has escapado del laberinto!"
+                                estadoFinal = estadoMov { ejecutando = False }
+                            in (msg, estadoFinal)
                           else
-                            -- rebotar y explicar qué falta
                             let faltaLlave = cantidadItem "llave_salida" (inventarioJugador estado) == 0
                                 faltaMonedasOMapa = not (M.findWithDefault False "mapa_completo" (flags estado))
                                                    && not (tieneAlMenos "moneda_dorada" 8 (inventarioJugador estado))
@@ -205,41 +198,43 @@ procesarComando cmd estado = case cmd of
                                   [ if faltaLlave then "Te falta la llave que trae el oso." else ""
                                   , if faltaMonedasOMapa then "Te faltan las 8 monedas doradas." else ""
                                   ]
-                            in ( "La puerta hacia fuera esta ahi, pero no puedes pasar: " ++ msgFalta
+                            in ( "La puerta hacia fuera está ahí, pero no puedes pasar: " ++ msgFalta
                                , estado )
                         else
-                          -- movimiento normal (no salida final)
+                          -- movimiento normal: solo actualizamos ubicacion y devolvemos aviso.
                           let estadoMov = estado { ubicacion = dest }
-                              salaDest = fromMaybe (error "sala inexistente") (lookupSala dest hs)
-                              (msgTrampas, estadoConTrampas) = resolverTrampasAlEntrar salaDest estadoMov
                               aviso = "Te desplazas a " ++ dest ++ "."
-                              fullMsg = if null msgTrampas then aviso else aviso ++ "\n" ++ msgTrampas
-                          in (fullMsg, estadoConTrampas)
+                          in (aviso, estadoMov)
   
   CmdTomar nombreObj ->
-    let cur = ubicacion estado
+    let key = map toLower (trim nombreObj)
+        cur = ubicacion estado
         hs = habitaciones estado
         mSala = lookupSala cur hs
     in case mSala of
-         Nothing -> ("Sala actual invalida.", estado)
+         Nothing -> ("Sala actual inválida.", estado)
          Just sala ->
-           case M.lookup nombreObj (objetosSala sala) of
-             Nothing -> ("No encuentro " ++ nombreObj ++ " aqui.", estado)
+           case M.lookup key (objetosSala sala) of
+             Nothing -> ("No encuentro " ++ nombreObj ++ " aquí.", estado)
              Just qty ->
                if qty <= 0
-               then ("No hay unidades de " ++ nombreObj ++ " aqui.", estado)
+               then ("No hay unidades de " ++ nombreObj ++ " aquí.", estado)
                else
-                 let nuevaObjsSala = if qty == 1 then M.delete nombreObj (objetosSala sala)
-                                     else M.insert nombreObj (qty - 1) (objetosSala sala)
+                 let nuevaObjsSala = if qty == 1 then M.delete key (objetosSala sala)
+                                     else M.insert key (qty - 1) (objetosSala sala)
                      nuevaSala = sala { objetosSala = nuevaObjsSala }
                      nuevasHabit = M.insert cur nuevaSala hs
-                     nuevoInv = añadirInventario nombreObj 1 (inventarioJugador estado)
+                     -- añadir al inventario usando la clave en minusculas
+                     nuevoInv = añadirInventario key 1 (inventarioJugador estado)
                      nuevoPeso = calcularPeso nuevoInv (catalogoObjetos estado)
                      estado' = estado { habitaciones = nuevasHabit
                                       , inventarioJugador = nuevoInv
                                       , pesoActual = nuevoPeso
                                       }
-                 in ("Has tomado: " ++ nombreObj ++ ".", estado')
+                     nombreLegible = case M.lookup key (catalogoObjetos estado) of
+                                       Just o -> objNombre o
+                                       Nothing -> key
+                 in ("Has tomado: " ++ nombreLegible ++ ".", estado')
 
   CmdUsar nombreObj ->
     let inv = inventarioJugador estado

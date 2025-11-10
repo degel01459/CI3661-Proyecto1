@@ -18,7 +18,7 @@ import System.Random (randomRIO)
 import Control.Monad (forM_, when)
 import Data.Maybe (fromMaybe)
 import Data.List (isPrefixOf)
-
+import qualified Data.Map as M
 -- Punto de entrada del programa
 main :: IO ()
 main = do
@@ -47,15 +47,15 @@ main = do
                     else do
                       j <- randomRIO (0, length candidateRooms - 1)
                       return (candidateRooms !! j)
-      -- Preparamos la lista de salas para asignar NPCs: todas menos la sala elegida
+      -- Preparamos la lista de salas para asignar NPCs todas menos la sala elegida
       let restoSalas = filter (/= chosenStart) allRoomNames
-      -- mezclamos las salas restantes para distribuir NPCs (opcional)
+      -- mezclamos las salas restantes para distribuir NPCs
       restoShuffled <- shuffle restoSalas
       -- asignamos NPCs usando restoShuffled
       let numNPCs = length npcPairs
           roomsForNPCs = take numNPCs (cycle restoShuffled)
           salasConNPCs = assignNPCs salasSinNPCs npcPairs roomsForNPCs
-      -- asignamos la sala inicial
+      -- estado inicial creado
       let salaInicial = chosenStart
           estadoInicial = EstadoJuego
             { habitaciones      = salasConNPCs
@@ -69,9 +69,19 @@ main = do
             , estadoCondicion   = Nothing
             , flags             = M.empty
             }
-      -- Aplicar trampas (si las hubiera) en la sala inicial antes de comenzar
+
+
+      -- Debug: listar trampas en cada sala
+      -- forM_ (M.toList (habitaciones estadoInicial)) $ \(sname, sala) -> do
+      --   let trapKeys = M.keys (trampasSala sala)
+      --   putStrLn $ "- " ++ sname ++ " -> " ++ show trapKeys
+
+      -- Aplicar trampas en la sala inicial antes de comenzar (si las hay)
       let salaObj = fromMaybe (error "Sala inicial no encontrada") (M.lookup salaInicial (habitaciones estadoInicial))
           (msgInicio, estadoConTrampas) = resolverTrampasAlEntrar salaObj estadoInicial
+      -- marcar la sala inicial como visitada para que gameLoop no re-aplique trampas
+      let visitFlagName r = "visited:" ++ r
+          estadoConInitialVisit = estadoConTrampas { flags = M.insert (visitFlagName salaInicial) True (flags estadoConTrampas) }
 
       putStrLn ("Mundo cargado. Sala inicial asignada aleatoriamente: " ++ salaInicial)
       when (not (null msgInicio)) $ putStrLn msgInicio
@@ -130,7 +140,36 @@ gameLoop estado =
       case parsearComando linea of
         Nothing -> putStrLn "Comando inválido." >> gameLoop estado
         Just comando -> do
-          let (msg, estado') = procesarComando comando estado
-          putStrLn msg
-          putStrLn "Escribe comandos (mirar, inventario, ir <direccion>, tomar <objeto>, usar <objeto>, hablar <npc>, salir)."
-          gameLoop estado'
+          let (msgBase, estadoIntermedio) = procesarComando comando estado
+
+          -- Si la ubicacion cambió, aplicar trampas solo si no fue visitada
+          let oldLoc = ubicacion estado
+              newLoc = ubicacion estadoIntermedio
+
+              visitFlagName r = "visited:" ++ r
+              fueVisitada st r = M.findWithDefault False (visitFlagName r) (flags st)
+
+          (msgTraps, estadoTrasTrampas) <-
+            if newLoc /= oldLoc && not (fueVisitada estadoIntermedio newLoc)
+               then
+                 -- obtener la sala y aplicar trampas
+                 case M.lookup newLoc (habitaciones estadoIntermedio) of
+                   Nothing -> return ("", estadoIntermedio) -- sala inexistente, raro
+                   Just salaObj -> do
+                     let (mt, stConTraps) = resolverTrampasAlEntrar salaObj estadoIntermedio
+                         -- marcar como visitada para no volver a aplicar (puedes omitir si prefieres)
+                         stMarcada = stConTraps { flags = M.insert (visitFlagName newLoc) True (flags stConTraps) }
+                     return (mt, stMarcada)
+               else return ("", estadoIntermedio)
+
+          -- Combina mensajes: primero el resultado del comando, luego trampas (si hubo)
+          let msgAll = if null msgTraps then msgBase else msgBase ++ "\n" ++ msgTraps
+
+          putStrLn msgAll
+
+          -- Si el jugador murió o salió, no mostrar prompt extra
+          if not (ejecutando estadoTrasTrampas)
+            then putStrLn "Juego finalizado."
+            else do
+              putStrLn "Escribe comandos (mirar, inventario, ir <direccion>, tomar <objeto>, usar <objeto>, hablar <npc>, salir)."
+              gameLoop estadoTrasTrampas
