@@ -99,7 +99,7 @@ resolverTrampasAlEntrar sala estado =
         case trapRequiereItem tr of
           Just reqItem ->
             if tieneRecurso reqItem
-            then (msgs ++ ["Ves una trampa (" ++ trapId tr ++ ") pero tienes " ++ reqItem ++ " — la evitas."], st)
+            then (msgs ++ ["Ves una trampa (" ++ trapId tr ++ ") pero tienes " ++ reqItem ++ " la evitas."], st)
             else
               let dmg = trapDaño tr
                   nuevaSalud = saludJugador st - dmg
