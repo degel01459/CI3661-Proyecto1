@@ -1,3 +1,6 @@
+-- Autor: Kevin Briceño
+-- Carnet: 15-11661
+-- src/Engine/Types.hs
 module Engine.Types
   ( ID
   , Nombre
@@ -16,6 +19,8 @@ module Engine.Types
   , Sala(..)
   , EstadoJuego(..)
   , Comando(..)
+  , TrapType(..)
+  , Trampa(..)
   , ContenedorSalas
   , ContenedorObjetos
   ) where
@@ -66,6 +71,18 @@ data Monstruo = Monstruo
   , monLoot :: [(NombreObjeto, Cantidad)]
   } deriving (Eq, Show)
 
+data TrapType = TrampaVenenosa | TrampaAgujero | TrampaCandado | TrampaRed | TrampaNone
+  deriving (Eq, Show)
+
+data Trampa = Trampa
+  { trapId        :: String           -- id corto p.ej. "serpientes_paso"
+  , trapTipo      :: TrapType
+  , trapDescripcion :: String
+  , trapRequiereItem :: Maybe NombreObjeto -- item que evita o desactiva
+  , trapDaño      :: Int              -- daño si no tienes el item
+  , trapBloqueaSalidas :: Bool        -- si impide seguir (true/false)
+  } deriving (Eq, Show)
+
 -- Disposición de NPCs
 data Disposicion = Amistoso | Neutral | Agresivo | Ambiguo
   deriving (Eq, Show)
@@ -90,7 +107,7 @@ data Sala = Sala
   , salaDesc      :: String
   , salidasSala   :: M.Map Direccion Salida
   , objetosSala   :: Inventario
-  , monstruosSala :: M.Map ID Monstruo
+  , trampasSala   :: M.Map String Trampa
   , npcsSala      :: M.Map NombreNPC NPC
   } deriving (Eq, Show)
 

@@ -1,3 +1,5 @@
+-- Autor: Kevin Briceño
+-- Carnet: 15-11661
 -- app/Main.hs
 module Main where
 
@@ -49,11 +51,6 @@ main = do
             , flags             = M.empty
             }
       putStrLn ("Mundo cargado. Sala inicial asignada aleatoriamente: " ++ salaInicial)
-      putStrLn "NPCs colocados aleatoriamente en el laberinto."
-      -- Lista de NPC->Sala para debug (opcional)
-      forM_ (M.toList salasConNPCs) $ \(sId, sala) ->
-        when (not (M.null (npcsSala sala))) $
-          putStrLn $ "Sala: " ++ sId ++ " contiene NPCs: " ++ show (M.keys (npcsSala sala))
       putStrLn "Escribe comandos (mirar, inventario, ir <direccion>, tomar <objeto>, usar <objeto>, hablar <npc>, salir)."
       gameLoop estadoInicial
 
@@ -106,4 +103,5 @@ gameLoop estado =
         Just comando -> do
           let (msg, estado') = procesarComando comando estado
           putStrLn msg
+          putStrLn "Escribe comandos (mirar, inventario, ir <direccion>, tomar <objeto>, usar <objeto>, hablar <npc>, salir)."
           gameLoop estado'

@@ -1,5 +1,7 @@
+-- Autor: Kevin Briceño
+-- Carnet: 15-11661
+-- src/Engine/Persistence.hs
 module Engine.Persistence (cargarMundo) where
-
 import Engine.Types
 import qualified Data.Map as M
 import Data.Char (isSpace, toLower)
@@ -116,6 +118,32 @@ defaultStats s = case lower s of
   _ -> (10,2)
   where isIn pat txt = pat `isPrefixOf` lower txt || pat `elem` words (lower txt)
 
+-- parsing helper para TRAMPA dentro de un bloque SALA
+parseTrampas :: [String] -> M.Map String Trampa
+parseTrampas ls =
+  let bloquesTrap = splitWhen (\l -> startsCI "TRAMPA:" l) ls
+      parseOne trapLines =
+        case extraeCampo "TRAMPA:" trapLines of
+          Nothing -> Nothing
+          Just tid ->
+            let desc = fromMaybe "" (extraeCampo "DESC:" trapLines)
+                req  = extraeCampo "REQUIERE:" trapLines
+                dan  = case extraeCampo "DANIO:" trapLines of
+                         Just n -> case reads n of ((v,_):_) -> v; _ -> 0
+                         Nothing -> 0
+                tipoTxt = fmap lower (extraeCampo "TIPO:" trapLines)
+                ttype = case tipoTxt of
+                           Just t | "ven" `isPrefixOf` t -> TrampaVenenosa
+                           Just t | "aguj" `isPrefixOf` t -> TrampaAgujero
+                           Just t | "cand" `isPrefixOf` t -> TrampaCandado
+                           _ -> TrampaNone
+                tr = Trampa tid ttype desc req dan True
+            in Just (tid, tr)
+  in M.fromList (catMaybes (map parseOne (groupTrapBlocks ls)))
+
+-- agrupa lineas en secciones de trap (simple)
+groupTrapBlocks :: [String] -> [[String]]
+groupTrapBlocks ls = filter (not . null) $ splitWhen (startsCI "TRAMPA:") ls
 -- parse NPC block
 parseNPC :: [String] -> Maybe NPC
 parseNPC ls =
@@ -159,13 +187,11 @@ parseSala ls =
           objetosRawLines = [ drop (length "OBJETO:") line | line <- ls, startsCI "OBJETO:" line ]
           objetosPairs = map (parseObjetoEnSala . trim) objetosRawLines
           objetosMap = foldr (\(k,c) acc -> if null k then acc else M.insertWith (+) k c acc) M.empty objetosPairs
-          monstruosParsed = case parseMonstruo ls of
-            Just m -> M.singleton (monId m) m
-            Nothing -> M.empty
+          trampasParsed = parseTrampas ls
           npcsParsed = case parseNPC ls of
             Just n -> M.singleton (npcId n) n
             Nothing -> M.empty
-      in Just (Sala nombreSala nombreSala desc salidasMap objetosMap monstruosParsed npcsParsed)
+      in Just (Sala nombreSala nombreSala desc salidasMap objetosMap trampasParsed npcsParsed)
     Nothing -> Nothing
 
 -- parsea un bloque genérico

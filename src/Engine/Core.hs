@@ -1,3 +1,6 @@
+-- Autor: Kevin Briceño
+-- Carnet: 15-11661
+-- src/Engine/Core.hs
 module Engine.Core (procesarComando) where
 
 import Engine.Types
@@ -38,9 +41,35 @@ mostrarSala sala catalogo =
                 else "Objetos: " ++ unwords [ o ++ (if n>1 then " x" ++ show n else "") | (o,n) <- objs ]
       npcs = M.keys (npcsSala sala)
       npcsTxt = if null npcs then "" else "Personas: " ++ unwords npcs
-      mons = M.keys (monstruosSala sala)
-      monsTxt = if null mons then "" else "Bestias: " ++ unwords mons
-  in unlines $ filter (not . null) [desc, salidasTxt, objsTxt, npcsTxt, monsTxt]
+      traps = M.keys (trampasSala sala)
+      trapsTxt = if null traps then "" else "Trampas: " ++ unwords traps
+  in unlines $ filter (not . null) [desc, salidasTxt, objsTxt, npcsTxt, trapsTxt]
+
+-- resolver trampas: si el jugador tiene el item requerido evita daño,
+resolverTrampasAlEntrar :: Sala -> EstadoJuego -> (String, EstadoJuego)
+resolverTrampasAlEntrar sala estado =
+  let traps = M.elems (trampasSala sala)
+      inv = inventarioJugador estado
+      apply (msgs, st) tr =
+        case trapRequiereItem tr of
+          Just reqItem ->
+            if M.member reqItem inv
+            then (msgs ++ ["Ves una trampa (" ++ trapId tr ++ ") pero tienes " ++ reqItem ++ " — la evitas."], st)
+            else
+              let dmg = trapDaño tr
+                  nuevaSalud = saludJugador st - dmg
+                  st' = st { saludJugador = nuevaSalud }
+                  msg = "Activaste trampa (" ++ trapId tr ++ "): " ++ trapDescripcion tr ++ " — recibes " ++ show dmg ++ " daño."
+              in (msgs ++ [msg], st')
+          Nothing ->
+            let dmg = trapDaño tr
+                nuevaSalud = saludJugador st - dmg
+                st' = st { saludJugador = nuevaSalud }
+                msg = "Trampa activa: " ++ trapDescripcion tr ++ ". Recibes " ++ show dmg ++ " daño."
+            in (msgs ++ [msg], st')
+      (mensajes, estadoFinal) = foldl apply ([], estado) traps
+      texto = if null mensajes then "" else unlines mensajes
+  in (texto, estadoFinal)
 
 mostrarDir :: Direccion -> String
 mostrarDir Norte = "Norte"
@@ -81,12 +110,17 @@ procesarComando cmd estado = case cmd of
              Nothing -> ("No puedes ir en esa dirección.", estado)
              Just salida ->
                case bloqueadaPor salida of
-                 Just llave ->
-                   ("La salida está bloqueada. Parece necesitar: " ++ llave, estado)
+                 Just llave -> ("La salida está bloqueada. Parece necesitar: " ++ llave, estado)
                  Nothing ->
                    let dest = destinoSalida salida
                    in if M.member dest hs
-                      then ("Te desplazas a " ++ dest ++ ".", estado { ubicacion = dest })
+                      then
+                        let estadoMov = estado { ubicacion = dest }
+                            salaDest = fromMaybe (error "sala inexistente") (lookupSala dest hs)
+                            (msgTrampas, estadoConTrampas) = resolverTrampasAlEntrar salaDest estadoMov
+                            aviso = "Te desplazas a " ++ dest ++ "."
+                            fullMsg = if null msgTrampas then aviso else aviso ++ "\n" ++ msgTrampas
+                        in (fullMsg, estadoConTrampas)
                       else ("La salida apunta a una sala inexistente: " ++ dest, estado)
 
   CmdTomar nombreObj ->

@@ -1,3 +1,6 @@
+-- Autor: Kevin Briceño
+-- Carnet: 15-11661
+-- src/Engine/Parser.hs
 module Engine.Parser (parsearComando) where
 
 import Engine.Types
